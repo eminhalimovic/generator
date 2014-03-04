@@ -165,7 +165,11 @@ class ProjectForm(ModelForm):
         home_dir = self.cleaned_data['home_dir']
         project_name = self.cleaned_data['project_name']
         if os.path.exists(home_dir):
-            r = subprocess.call(["/usr/bin/django-admin", "startproject", project_name, "--settings=django.conf.global_settings"], cwd=home_dir)
+            # r = subprocess.call(["/usr/bin/django-admin", "startproject", project_name, "--settings=django.conf.global_settings"], cwd=home_dir, stderr=subprocess.STDOUT, shell=True)
+            r = subprocess.call(["/usr/bin/django-admin", "startproject", project_name, "--settings=django.conf.global_settings"], cwd=home_dir)            
+            if r == 0:
+                settings_file_path = os.path.join(home_dir, project_name, project_name, 'settings.py')
+                r = subprocess.call("rm " + settings_file_path, stderr=subprocess.STDOUT, shell=True)
         return home_dir
         
 class ProjectProjectAdmin(admin.ModelAdmin):
