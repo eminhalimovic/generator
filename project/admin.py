@@ -5,11 +5,11 @@ from django.forms import ModelForm
 import django.conf
 from django.utils.functional import curry
 
-project_template_path = '/usr/share/pyshared/django/conf/project_template'
+# dohvati project template settings kao modul
+project_template_path = os.path.join(os.path.dirname(django.conf.__file__), 'project_template', 'project_name')
 sys.path.append(project_template_path)
 import settings          
         
-
 class InstalledAppAdmin(admin.TabularInline):
     model = InstalledApp
     extra = 6   
@@ -131,9 +131,6 @@ class ProjectForm(ModelForm):
     
     def __init__(self, *args, **kwargs):
         ### override ModelForm __init__() metode
-        # dohvati project template settings kao modul
-        # project_template_path = os.path.join(os.path.dirname(django.conf.__file__), 'project_template')
-        
         # inicijaliziramo polja forme 
         super(ProjectForm, self).__init__(*args, **kwargs)
         self.fields['time_zone'].initial = settings.TIME_ZONE
