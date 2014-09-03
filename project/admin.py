@@ -133,25 +133,76 @@ class ProjectForm(ModelForm):
         ### override ModelForm __init__() metode
         # inicijaliziramo polja forme 
         super(ProjectForm, self).__init__(*args, **kwargs)
-        self.fields['time_zone'].initial = settings.TIME_ZONE
-        self.fields['allowed_hosts'].initial = ', '.join(repr(x) for x in settings.ALLOWED_HOSTS)
-        self.fields['debug'].initial = repr(settings.DEBUG)
-        self.fields['language_code'].initial = settings.LANGUAGE_CODE
-        self.fields['logging'].initial = repr(settings.LOGGING)
+        try:
+            self.fields['time_zone'].initial = settings.TIME_ZONE
+        except:
+            pass
+        try:
+            self.fields['allowed_hosts'].initial = ', '.join(repr(x) for x in settings.ALLOWED_HOSTS)
+        except:
+            pass
+        try:
+            self.fields['debug'].initial = repr(settings.DEBUG)            
+        except:
+            pass
+        try:
+            self.fields['language_code'].initial = settings.LANGUAGE_CODE            
+        except:
+            pass
+        try:
+            self.fields['logging'].initial = repr(settings.LOGGING)
+        except:
+            pass
         #self.fields['managers'].initial = repr(settings.DEBUG)
-        self.fields['media_root'].initial = settings.MEDIA_ROOT
-        self.fields['media_url'].initial = settings.MEDIA_URL
-        self.fields['root_urlconf'].initial = settings.ROOT_URLCONF
-        self.fields['secret_key'].initial = settings.SECRET_KEY
-        self.fields['site_id'].initial = str(settings.SITE_ID)
-        self.fields['staticfiles_dirs'].initial = settings.STATICFILES_DIRS
-        self.fields['static_root'].initial = settings.STATIC_ROOT
-        self.fields['static_url'].initial = settings.STATIC_URL
-        #self.fields['template_debug'].initial = settings.TEMPLATE_DEBUG
-        self.fields['template_dirs'].initial = settings.TEMPLATE_DIRS
-        self.fields['time_zone'].initial = settings.TIME_ZONE
-        self.fields['use_i18n'].initial = repr(settings.USE_I18N)
-        self.fields['use_l10n'].initial = repr(settings.USE_L10N)
+        try:
+            self.fields['media_root'].initial = settings.MEDIA_ROOT
+        except:
+            pass
+        try:
+            self.fields['media_url'].initial = settings.MEDIA_URL
+        except:
+            pass
+        try:
+            self.fields['root_urlconf'].initial = settings.ROOT_URLCONF
+        except:
+            pass
+        try:
+            self.fields['secret_key'].initial = settings.SECRET_KEY
+        except:
+            pass
+        try:
+            self.fields['site_id'].initial = str(settings.SITE_ID)
+        except:
+            pass
+        try:
+            self.fields['staticfiles_dirs'].initial = settings.STATICFILES_DIRS
+        except:
+            pass
+        try:
+            self.fields['static_root'].initial = settings.STATIC_ROOT
+        except:
+            pass
+        try:
+            self.fields['static_url'].initial = settings.STATIC_URL
+        except:
+            pass
+        #self.fields['template_debug'].initial = settings.TEMPLATE_DEBUG            
+        try:
+            self.fields['template_dirs'].initial = settings.TEMPLATE_DIRS
+        except:
+            pass
+        try:
+            self.fields['time_zone'].initial = settings.TIME_ZONE
+        except:
+            pass
+        try:
+            self.fields['use_i18n'].initial = repr(settings.USE_I18N)
+        except:
+            pass
+        try:
+            self.fields['use_l10n'].initial = repr(settings.USE_L10N)
+        except:
+            pass
         #self.fields['use_tz'].initial = settings.USE_TZ
         #self.fields['wsgi_application'].initial = settings.WSGI_APPLICATION
         
@@ -164,7 +215,8 @@ class ProjectForm(ModelForm):
         project_name = self.cleaned_data['project_name']
         if os.path.exists(home_dir):
             # r = subprocess.call(["/usr/bin/django-admin", "startproject", project_name, "--settings=django.conf.global_settings"], cwd=home_dir, stderr=subprocess.STDOUT, shell=True)
-            r = subprocess.call(["/usr/bin/django-admin", "startproject", project_name, "--settings=django.conf.global_settings"], cwd=home_dir)            
+            #r = subprocess.call(["/usr/bin/django-admin", "startproject", project_name, "--settings=django.conf.global_settings"], cwd=home_dir)            
+            r = subprocess.call(["/root/django-1.7/bin/django-admin", "startproject", project_name, "--settings=django.conf.global_settings"], cwd=home_dir)            
             if r == 0:
                 settings_file_path = os.path.join(home_dir, project_name, project_name, 'settings.py')
                 r = subprocess.call("rm " + settings_file_path, stderr=subprocess.STDOUT, shell=True)
