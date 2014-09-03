@@ -157,8 +157,9 @@ class ProjectForm(ModelForm):
         
                 
     def clean_home_dir(self):
-        # clean_FIELD_NAME - validacija polja
+        # clean_FIELD_NAME - validacija polja FIELD_NAME
         # uvijek treba vratiti cleaned_data od toga polja    
+        
         home_dir = self.cleaned_data['home_dir']
         project_name = self.cleaned_data['project_name']
         if os.path.exists(home_dir):
