@@ -106,6 +106,7 @@ admin.site.register(TemplateLoader, TemplateLoaderAdmin)
 class DatabaseConnectionForm(ModelForm):
     class Meta:
         model = DatabaseConnection
+        fields = '__all__'
         
     def __init__(self, *args, **kwargs):
         super(DatabaseConnectionForm, self).__init__(*args, **kwargs)
@@ -128,6 +129,7 @@ admin.site.register(DatabaseConnection, DatabaseConnectionAdmin)
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
+        fields = '__all__'
     
     def __init__(self, *args, **kwargs):
         ### override ModelForm __init__() metode
