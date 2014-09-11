@@ -8,7 +8,8 @@ from django.utils.functional import curry
 # dohvati project template settings kao modul
 project_template_path = os.path.join(os.path.dirname(django.conf.__file__), 'project_template', 'project_name')
 sys.path.append(project_template_path)
-import settings          
+import settings
+import util.settings_tools
         
 class InstalledAppAdmin(admin.TabularInline):
     model = InstalledApp
@@ -112,12 +113,18 @@ class DatabaseConnectionForm(ModelForm):
         super(DatabaseConnectionForm, self).__init__(*args, **kwargs)
         default_settings = settings.DATABASES['default']
         self.fields['connection_name'].initial = 'default'
-        self.fields['engine'].initial = default_settings['ENGINE']
-        self.fields['name'].initial = default_settings['NAME']
-        self.fields['user'].initial = default_settings['USER']
-        self.fields['password'].initial = default_settings['PASSWORD']
-        self.fields['host'].initial = default_settings['HOST']
-        self.fields['port'].initial = default_settings['PORT']
+        if default_settings.has_key('ENGINE'):
+            self.fields['engine'].initial = default_settings['ENGINE']
+        if default_settings.has_key('NAME'):
+            self.fields['name'].initial = default_settings['NAME']
+        if default_settings.has_key('USER'):
+            self.fields['user'].initial = default_settings['USER']
+        if default_settings.has_key('PASSWORD'):
+            self.fields['password'].initial = default_settings['PASSWORD']
+        if default_settings.has_key('HOST'):
+            self.fields['host'].initial = default_settings['HOST']
+        if default_settings.has_key('PORT'):
+            self.fields['port'].initial = default_settings['PORT']
         
 class DatabaseConnectionAdmin(admin.ModelAdmin):
     form = DatabaseConnectionForm
@@ -135,93 +142,109 @@ class ProjectForm(ModelForm):
         ### override ModelForm __init__() metode
         # inicijaliziramo polja forme 
         super(ProjectForm, self).__init__(*args, **kwargs)
+        #pdb; pdb.set_trace()
+        settings_text = util.settings_tools.read(os.path.join(project_template_path, "settings.py"))
         try:
-            self.fields['time_zone'].initial = settings.TIME_ZONE
+            self.fields['home_dir'].initial = settings_text['BASE_DIR']
         except:
             pass
         try:
-            self.fields['allowed_hosts'].initial = ', '.join(repr(x) for x in settings.ALLOWED_HOSTS)
+            self.fields['time_zone'].initial = settings_text['TIME_ZONE']
         except:
             pass
         try:
-            self.fields['debug'].initial = repr(settings.DEBUG)            
+            self.fields['allowed_hosts'].initial = settings_text['ALLOWED_HOSTS']
         except:
             pass
         try:
-            self.fields['language_code'].initial = settings.LANGUAGE_CODE            
+            self.fields['debug'].initial = settings_text['DEBUG']
         except:
             pass
         try:
-            self.fields['logging'].initial = repr(settings.LOGGING)
-        except:
-            pass
-        #self.fields['managers'].initial = repr(settings.DEBUG)
-        try:
-            self.fields['media_root'].initial = settings.MEDIA_ROOT
+            self.fields['language_code'].initial = settings_text['LANGUAGE_CODE']
         except:
             pass
         try:
-            self.fields['media_url'].initial = settings.MEDIA_URL
+            self.fields['logging'].initial = settings_text['LOGGING']
+        except:
+            pass
+        #self.fields['managers'].initial = settings_text.DEBUG
+        try:
+            self.fields['media_root'].initial = settings_text['MEDIA_ROOT']
         except:
             pass
         try:
-            self.fields['root_urlconf'].initial = settings.ROOT_URLCONF
+            self.fields['media_url'].initial = settings_text['MEDIA_URL']
         except:
             pass
         try:
-            self.fields['secret_key'].initial = settings.SECRET_KEY
+            self.fields['root_urlconf'].initial = settings_text['ROOT_URLCONF']
         except:
             pass
         try:
-            self.fields['site_id'].initial = str(settings.SITE_ID)
+            self.fields['secret_key'].initial = settings_text['SECRET_KEY']
         except:
             pass
         try:
-            self.fields['staticfiles_dirs'].initial = settings.STATICFILES_DIRS
+            self.fields['site_id'].initial = settings_text['SITE_ID']
         except:
             pass
         try:
-            self.fields['static_root'].initial = settings.STATIC_ROOT
+            self.fields['staticfiles_dirs'].initial = settings_text['STATICFILES_DIRS']
         except:
             pass
         try:
-            self.fields['static_url'].initial = settings.STATIC_URL
-        except:
-            pass
-        #self.fields['template_debug'].initial = settings.TEMPLATE_DEBUG            
-        try:
-            self.fields['template_dirs'].initial = settings.TEMPLATE_DIRS
+            self.fields['static_root'].initial = settings_text['STATIC_ROOT']
         except:
             pass
         try:
-            self.fields['time_zone'].initial = settings.TIME_ZONE
+            self.fields['static_url'].initial = settings_text['STATIC_URL']
         except:
             pass
         try:
-            self.fields['use_i18n'].initial = repr(settings.USE_I18N)
+            self.fields['template_debug'].initial = settings_text['TEMPLATE_DEBUG ']
         except:
             pass
         try:
-            self.fields['use_l10n'].initial = repr(settings.USE_L10N)
+            self.fields['template_dirs'].initial = settings_text['TEMPLATE_DIRS']
         except:
             pass
-        #self.fields['use_tz'].initial = settings.USE_TZ
-        #self.fields['wsgi_application'].initial = settings.WSGI_APPLICATION
-        
+        try:
+            self.fields['time_zone'].initial = settings_text['TIME_ZONE']
+        except:
+            pass
+        try:
+            self.fields['use_i18n'].initial = settings_text['USE_I18N']
+        except:
+            pass
+        try:
+            self.fields['use_l10n'].initial = settings_text['USE_L10N']
+        except:
+            pass
+        try:
+            self.fields['use_tz'].initial = settings_text['USE_TZ']
+        except:
+            pass
+        try:
+            self.fields['wsgi_application'].initial = settings_text['WSGI_APPLICATION']
+        except:
+            pass
                 
     def clean_home_dir(self):
         # clean_FIELD_NAME - validacija polja FIELD_NAME
-        # uvijek treba vratiti cleaned_data od toga polja ('return home_dir')
+        # metoda uvijek treba vratiti cleaned_data od toga polja ('return home_dir')
         
         home_dir = self.cleaned_data['home_dir']
         project_name = self.cleaned_data['project_name']
-        if os.path.exists(home_dir):
-            # r = subprocess.call(["/usr/bin/django-admin", "startproject", project_name, "--settings=django.conf.global_settings"], cwd=home_dir, stderr=subprocess.STDOUT, shell=True)
-            #r = subprocess.call(["/usr/bin/django-admin", "startproject", project_name, "--settings=django.conf.global_settings"], cwd=home_dir)            
-            r = subprocess.call(["/root/django-1.7/bin/django-admin", "startproject", project_name, "--settings=django.conf.global_settings"], cwd=home_dir)            
-            if r == 0:
-                settings_file_path = os.path.join(home_dir, project_name, project_name, 'settings.py')
-                r = subprocess.call("rm " + settings_file_path, stderr=subprocess.STDOUT, shell=True)
+        #import pdb;pdb.set_trace()
+        
+        # r = subprocess.call(["/usr/bin/django-admin", "startproject", project_name, "--settings=django.conf.global_settings"], cwd=home_dir, stderr=subprocess.STDOUT, shell=True)
+        #r = subprocess.call(["/usr/bin/django-admin", "startproject", project_name, "--settings=django.conf.global_settings"], cwd=home_dir)            
+        #r = subprocess.call(["/root/django-1.7/bin/django-admin", "startproject", project_name, "--settings=django.conf.global_settings"], cwd=home_dir)
+        r = subprocess.call(["/root/django-1.7/bin/django-admin", "startproject", project_name, "--settings=django.conf.global_settings"], cwd="/root/django-1.7/projects-django")
+        if r == 0:
+            settings_file_path = os.path.join(home_dir, project_name, project_name, 'settings_text.py')
+            #r = subprocess.call("rm " + settings_file_path, stderr=subprocess.STDOUT, shell=True)
         return home_dir
         
 class ProjectProjectAdmin(admin.ModelAdmin):
