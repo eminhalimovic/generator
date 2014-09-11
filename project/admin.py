@@ -143,7 +143,8 @@ class ProjectForm(ModelForm):
         # inicijaliziramo polja forme 
         super(ProjectForm, self).__init__(*args, **kwargs)
         #pdb; pdb.set_trace()
-        settings_text = util.settings_tools.read(os.path.join(project_template_path, "settings.py"))
+        setts = util.settings_tools.parse(os.path.join(project_template_path, "settings.py"))
+        settings_text = setts[0]
         try:
             self.fields['home_dir'].initial = settings_text['BASE_DIR']
         except:

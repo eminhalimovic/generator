@@ -6,7 +6,7 @@ class Project(models.Model):
     allowed_hosts = models.CharField(max_length=1024, blank=True)
     debug = models.BooleanField(default=True)
     language_code = models.CharField(max_length=16)
-    logging = models.CharField(max_length=1024)
+    logging = models.CharField(max_length=1024, blank = True)
     managers = models.CharField(max_length=1024, default='ADMINS')
     media_root = models.CharField(max_length=1024, blank=True)
     media_url = models.CharField(max_length=1024, blank=True)

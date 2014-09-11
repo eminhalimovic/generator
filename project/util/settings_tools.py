@@ -48,13 +48,20 @@ def append(file, setting, value, type):
         entry = entry + "}\n"
     f.write(entry + "\n")
     f.close()
-    
-def read(file):
+
+def parse(file):
+    res = [{}, {}]
     if not os.path.exists(file):
-        return
+        return res
     f = open(file, "rb")    # Mode includes binary (b) for safe handling on Windows OS
     s = f.read()
     f.close()
+    settings = get_settings(s)
+    comments = get_comments(s, settings)
+    res = [settings, comments]
+    return res
+    
+def get_settings(s):
     settings = {}
     done = False
     pos = -1
@@ -77,7 +84,10 @@ def read(file):
             valend = s.rfind("\n", pos, nextpos)                
         value = remove_comments(s[pos + 1:valend].strip())
         settings[setting] = value
-    return settings
+    return settings    
+    
+def get_comments(file, settings):
+    return None
 
 def remove_comments(value):
     res = value

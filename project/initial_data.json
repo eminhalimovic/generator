@@ -1,0 +1,29 @@
+[
+	{"fields": {"name": "django.contrib.auth"}, "model": "project.djangoapp", "pk": 1}, 
+	{"fields": {"name": "django.contrib.contenttypes"}, "model": "project.djangoapp", "pk": 2},
+	{"fields": {"name": "django.contrib.sessions"}, "model": "project.djangoapp", "pk": 3}, 
+	{"fields": {"name": "django.contrib.sites"}, "model": "project.djangoapp", "pk": 4}, 
+	{"fields": {"name": "django.contrib.messages"}, "model": "project.djangoapp", "pk": 5}, 
+	{"fields": {"name": "django.contrib.staticfiles"}, "model": "project.djangoapp", "pk": 6}, {"fields": {"name": "django.contrib.admin"}, "model": "project.djangoapp", "pk": 7}, 
+	{"fields": {"name": "django.contrib.admindocs"}, "model": "project.djangoapp", "pk": 8}, 
+	
+	{"fields": {"name": "django.db.backends.postgresql_psycopg2"}, "model": "project.databaseengine", "pk": 1}, 
+	{"fields": {"name": "django.db.backends.mysql"}, "model": "project.databaseengine", "pk": 2}, 
+	{"fields": {"name": "django.db.backends.sqlite3"}, "model": "project.databaseengine", "pk": 3}, 
+	{"fields": {"name": "django.db.backends.oracle"}, "model": "project.databaseengine", "pk": 4}, 
+	
+	{"fields": {"name": "django.middleware.common.CommonMiddleware"}, "model": "project.middlewareclass", "pk": 1}, 
+	{"fields": {"name": "django.contrib.sessions.middleware.SessionMiddleware"}, "model": "project.middlewareclass", "pk": 2}, 
+	{"fields": {"name": "django.middleware.csrf.CsrfViewMiddleware"}, "model": "project.middlewareclass", "pk": 3}, 
+	{"fields": {"name": "django.contrib.auth.middleware.AuthenticationMiddleware"}, "model": "project.middlewareclass", "pk": 4}, 
+	{"fields": {"name": "django.contrib.messages.middleware.MessageMiddleware"}, "model": "project.middlewareclass", "pk": 5}, 
+	{"fields": {"name": "django.middleware.clickjacking.XFrameOptionsMiddleware"}, "model": "project.middlewareclass", "pk": 6},
+	
+	{"fields": {"name": "django.contrib.staticfiles.finders.FileSystemFinder"}, "model": "project.staticfilesfinder", "pk": 1},
+	{"fields": {"name": "django.contrib.staticfiles.finders.AppDirectoriesFinder"}, "model": "project.staticfilesfinder", "pk": 2},
+	{"fields": {"name": "django.contrib.staticfiles.finders.DefaultStorageFinder"}, "model": "project.staticfilesfinder", "pk": 3}, 
+	
+	{"fields": {"name": "django.template.loaders.filesystem.Loader"}, "model": "project.templateloader", "pk": 1},
+	{"fields": {"name": "django.template.loaders.app_directories.Loader"}, "model": "project.templateloader", "pk": 2},
+	{"fields": {"name": "django.template.loaders.eggs.Loader"}, "model": "project.templateloader", "pk": 3}
+]
